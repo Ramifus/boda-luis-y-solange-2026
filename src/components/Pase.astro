@@ -1,5 +1,11 @@
 ---
 // Pase.astro
+import {
+    NOMBRE_POR_DEFECTO,
+    etiquetaPases,
+    frasePresenciaPases,
+} from "../lib/pases";
+
 interface Props {
     numeroPases: number;
     nombreInvitado?: string;
@@ -34,92 +40,70 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
                 >
                     <!-- IMAGEN DE FONDO -->
                     <img
-                        src="/imagenes/azul.png"
+                        src="/imagenes/azul-vertical.webp"
                         alt="Fondo pase"
                         class="absolute inset-0 w-full h-full object-cover"
                     />
 
                     <!-- Contenido de la card -->
-                    <div class="relative px-6 pt-16 pb-10 z-10 text-center">
+                    <div class="relative px-6 pt-14 pb-10 z-10 text-center">
 
-                        <!-- TÍTULO -->
-                        <div class="mb-6" id="titulo-pase">
+                        <!-- INVITACIÓN + NOMBRE DEL INVITADO -->
+                        <div class="mb-5" id="titulo-pase">
+                            <p
+                                class="font-crimson text-sm uppercase tracking-[0.25em] text-white/80 font-semibold leading-relaxed mb-2"
+                            >
+                                Invitación con<br />mucho cariño para
+                            </p>
+                            <!-- El nombre puede bajar de renglón: no se fuerza a una sola línea -->
                             <h2
-                                class="font-great-vibes text-[2.5rem] text-white leading-none mb-2"
+                                class="font-great-vibes text-[2.25rem] text-white leading-tight break-words"
+                                id="nombre-invitado"
                             >
-                                Pases
+                                {nombreInvitado || NOMBRE_POR_DEFECTO}
                             </h2>
-                            <p
-                                class="font-crimson text-sm uppercase tracking-widest text-white/80 font-semibold"
-                            >
-                                ASIGNADOS
-                            </p>
-                        </div>
-
-                        <!-- NÚMERO DE PASES -->
-                        <div class="mb-4" id="numero-pase">
-                            <p
-                                class="text-white font-bold leading-none"
-                                style="font-size: 5rem; text-shadow: 0 4px 16px rgba(0,0,0,0.2);"
-                            >
-                                {numeroPases}
-                            </p>
-                            <p
-                                class="font-crimson text-base uppercase tracking-[0.3em] text-white/80 mt-1"
-                            >
-                                {numeroPases === 1 ? "Pase" : "Pases"}
-                            </p>
                         </div>
 
                         <!-- SEPARADOR -->
-                        <div class="flex items-center justify-center gap-2 my-4">
-                            <div class="w-10 h-px bg-white/40"></div>
-                            <div class="w-1.5 h-1.5 rounded-full bg-white/50"></div>
-                            <div class="w-10 h-px bg-white/40"></div>
+                        <div class="flex items-center justify-center my-4 px-6">
+                            <div class="flex-1 h-px bg-white/30"></div>
+                            <div class="mx-3 text-[#C2A96B] text-xs">✦</div>
+                            <div class="flex-1 h-px bg-white/30"></div>
                         </div>
 
-                        <!-- NOMBRE DEL INVITADO (opcional) -->
-                        {
-                            nombreInvitado && (
-                                <p class="font-great-vibes text-white text-2xl mb-4">
-                                    {nombreInvitado}
-                                </p>
-                            )
-                        }
+                        <!-- PASES ASIGNADOS -->
+                        <div class="mb-5" id="numero-pase">
+                            <p
+                                class="font-crimson text-sm uppercase tracking-[0.25em] text-white/80 font-semibold mb-3"
+                            >
+                                Pases asignados
+                            </p>
+                            <div
+                                class="w-20 h-20 mx-auto rounded-full border border-white/40 bg-white/10 flex items-center justify-center shadow-lg"
+                            >
+                                <span
+                                    class="text-white font-bold leading-none text-[2.75rem]"
+                                    id="numero-pases"
+                                >
+                                    {numeroPases}
+                                </span>
+                            </div>
+                            <p
+                                class="font-crimson text-sm uppercase tracking-[0.3em] text-white/80 font-semibold mt-3"
+                                id="etiqueta-pases"
+                            >
+                                {etiquetaPases(numeroPases)}
+                            </p>
+                        </div>
 
                         <!-- TEXTO DESCRIPTIVO -->
                         <div id="texto-pase">
                             <p
-                                class="font-crimson text-lg leading-relaxed text-white/90 italic"
+                                class="font-crimson text-lg leading-snug text-white italic"
+                                id="frase-pases"
                             >
-                                {
-                                    numeroPases === 1
-                                        ? "Esperamos contar con tu presencia"
-                                        : numeroPases === 2
-                                          ? "Esperamos contar con la presencia de ambos"
-                                          : `Esperamos contar con la presencia de los ${numeroPases}`
-                                }
+                                {frasePresenciaPases(numeroPases)}
                             </p>
-                        </div>
-
-                        <!-- ICONOS DE PERSONAS -->
-                        <div class="flex justify-center gap-3 mt-6" id="iconos-pase">
-                            {
-                                Array.from({ length: numeroPases }).map((_, index) => (
-                                    <div
-                                        class="w-9 h-9 rounded-full bg-white/20 border border-white/40 flex items-center justify-center"
-                                        style={`animation-delay: ${index * 0.2}s;`}
-                                    >
-                                        <svg
-                                            class="w-5 h-5 text-white"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                        </svg>
-                                    </div>
-                                ))
-                            }
                         </div>
 
                     </div>
@@ -128,6 +112,42 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
         </div>
     </div>
 </section>
+
+<!-- Datos del invitado desde el panel (link con ?i=codigo) -->
+<script>
+    import { datosInvitado, alCambiarInvitado } from "../lib/invitado";
+    import type { Invitado } from "../lib/invitado";
+    import { etiquetaPases, frasePresenciaPases } from "../lib/pases";
+
+    function pintarPase(nombre: string | null, pases: number | null) {
+        if (nombre) {
+            const el = document.getElementById("nombre-invitado");
+            if (el) el.textContent = nombre;
+        }
+        if (pases !== null && Number.isInteger(pases) && pases > 0) {
+            const num = document.getElementById("numero-pases");
+            const etiqueta = document.getElementById("etiqueta-pases");
+            const frase = document.getElementById("frase-pases");
+            if (num) num.textContent = String(pases);
+            if (etiqueta) etiqueta.textContent = etiquetaPases(pases);
+            if (frase) frase.textContent = frasePresenciaPases(pases);
+        }
+    }
+
+    function mostrar(inv: Invitado | null) {
+        if (!inv) return;
+        const funciones = (inv.funciones || {}) as { pases?: boolean };
+        const sinPases = funciones.pases === false;
+        for (const id of ["numero-pase", "texto-pase"]) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = sinPases ? "none" : "";
+        }
+        pintarPase(inv.nombre, sinPases ? null : inv.pases);
+    }
+
+    datosInvitado().then(mostrar);
+    alCambiarInvitado(mostrar);
+</script>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
 <!-- 🎬 ANIMACIONES CON GSAP                                     -->
@@ -215,23 +235,6 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
                     y: 0,
                     duration: 0.6,
                     delay: 0.4,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: "#card-pase",
-                        start: "top 80%",
-                        toggleActions: "play none none reset",
-                    },
-                },
-            );
-
-            gsap.fromTo(
-                "#iconos-pase",
-                { opacity: 0, y: 20 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    delay: 0.6,
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: "#card-pase",
