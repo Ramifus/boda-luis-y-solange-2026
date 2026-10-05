@@ -10,6 +10,5 @@ export function etiquetaPases(numero: number): string {
 
 export function frasePresenciaPases(numero: number): string {
     if (numero === 1) return "Esperamos contar con tu presencia";
-    if (numero === 2) return "Esperamos contar con la presencia de ambos";
-    return `Esperamos contar con la presencia de los ${numero}`;
+    return "Esperamos contar con su presencia";
 }
